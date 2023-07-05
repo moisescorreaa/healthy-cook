@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/color_scheme.dart';
-import 'package:healthy_cook/views/login-page.dart';
+import 'package:healthy_cook/views/register_page.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => RegisterPage(),
       },
       initialRoute: '/',
     );

@@ -1,0 +1,28 @@
+# ninja log v5
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/libflutter_linux_gtk.so	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_engine.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_method_call.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_method_response.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_value.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/fl_view.h	4c784d09a3b9efda
+1	17964	0	/home/moises/Documentos/Projetos - Codes/healthy_cook/linux/flutter/ephemeral/flutter_linux/flutter_linux.h	4c784d09a3b9efda
+1	17964	0	flutter/_phony_	4c784d09a3b9efda
+17965	18886	1688409761200860978	CMakeFiles/healthy_cook.dir/flutter/generated_plugin_registrant.cc.o	2799e9489c5ce8e9
+17964	18946	1688409761260860795	CMakeFiles/healthy_cook.dir/main.cc.o	baf8eb30d58cd019
+17964	19056	1688409761372860452	CMakeFiles/healthy_cook.dir/my_application.cc.o	ce72fd62fef5fb91
+19056	19345	1688409761664859558	intermediates_do_not_run/healthy_cook	512b32943a5e2a70
+19345	19512	0	CMakeFiles/install.util	b282eeb471a66c25

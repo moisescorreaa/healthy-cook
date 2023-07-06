@@ -22,8 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(50),
-                    child: Container(
+                    padding: const EdgeInsets.all(50),
+                    child: SizedBox(
                       height: 100,
                       width: 100,
                       child: Image.asset('assets/images/logotipo.png'),
@@ -33,13 +33,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Form(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Cadastro',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 26,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -48,12 +48,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 300,
                       child: TextFormField(
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
                           labelText: 'Nome do usuário',
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),
@@ -65,12 +66,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         keyboardType: TextInputType
                             .emailAddress, // aparece o @ no teclado
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email),
                           labelText: "Email",
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),
@@ -80,12 +82,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 300,
                       child: TextFormField(
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.key),
                           labelText: "Senha",
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),
@@ -111,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: const Text(
                             ' termos',
                             style: TextStyle(
-                              color: Color(0xFF82CFFF),
+                              color: Color(0xFF68FF89),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -155,24 +158,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          color: Colors.amber,
-                          width: 30,
-                          height: 30,
-                        ),
-                        Container(
-                          color: Colors.amber,
-                          width: 30,
-                          height: 30,
-                        ),
-                        Container(
-                          color: Colors.amber,
-                          width: 30,
-                          height: 30,
+                        SizedBox(
+                          height: 40,
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: Image.asset('assets/images/google.png')),
                         ),
                       ],
                     )

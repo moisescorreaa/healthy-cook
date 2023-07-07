@@ -103,22 +103,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             setState(() {});
                           },
                         ),
-                        const Text(
-                          'Concordo com os',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            ' termos',
-                            style: TextStyle(
-                              color: Color(0xFF68FF89),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
+                        TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Termos de uso',
+                            ))
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -140,7 +129,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => {},
+                          onPressed: () =>
+                              Navigator.of(context).pushNamed('/login'),
                           child: const Text(
                             ' Faça login aqui',
                             style: TextStyle(

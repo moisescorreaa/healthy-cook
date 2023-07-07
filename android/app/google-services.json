@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252143217416",
+    "project_id": "healthy-cook-79dd3",
+    "storage_bucket": "healthy-cook-79dd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252143217416:android:4b119b582711b5e3921abd",
+        "android_client_info": {
+          "package_name": "com.example.healthy_cook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252143217416-i2ph5kbn8caef2crggo5ingq5mvhvgdn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUEo11TDOK-iqufKVzQ-IUrPhidEIvNgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252143217416-i2ph5kbn8caef2crggo5ingq5mvhvgdn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

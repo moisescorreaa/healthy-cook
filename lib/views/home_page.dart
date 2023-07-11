@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:healthy_cook/color_scheme.dart';
 import 'package:healthy_cook/views/add_page.dart';
 import 'package:healthy_cook/views/initial_page.dart';
 import 'package:healthy_cook/views/profile_page.dart';
@@ -7,7 +8,7 @@ import 'package:healthy_cook/views/search_page.dart';
 import 'package:line_icons/line_icons.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,10 +17,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedPage = 0;
   late PageController pController;
+  Color navBarBackgroundColor = lightColorScheme.primary;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pController = PageController(initialPage: selectedPage);
   }
@@ -32,6 +33,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      navBarBackgroundColor = darkColorScheme.primary;
+    } else {
+      navBarBackgroundColor = lightColorScheme.primary;
+    }
+
     return Scaffold(
       body: PageView(
         controller: pController,
@@ -68,6 +75,7 @@ class _HomePageState extends State<HomePage> {
             text: 'Profile',
           )
         ],
+        backgroundColor: navBarBackgroundColor,
         onTabChange: (page) => pController.animateToPage(page,
             duration: const Duration(milliseconds: 400), curve: Curves.easeIn),
       ),

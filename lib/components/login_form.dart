@@ -60,7 +60,9 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: 300,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed('/home');
+              },
               child: const Text("Login"),
             ),
           ),

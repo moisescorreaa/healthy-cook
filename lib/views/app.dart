@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/color_scheme.dart';
+import 'package:healthy_cook/views/home_page.dart';
 import 'package:healthy_cook/views/login_page.dart';
 import 'package:healthy_cook/views/register_page.dart';
 
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
       routes: {
         '/': (context) => const RegisterPage(),
         '/login': (context) => const LoginPage(),
+        '/home': (context) => const HomePage(),
       },
       initialRoute: '/',
     );

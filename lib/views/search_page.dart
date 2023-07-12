@@ -10,6 +10,15 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'HealthyCook',
+          style: TextStyle(fontSize: 20),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+      ),
+    );
   }
 }

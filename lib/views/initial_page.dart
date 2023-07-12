@@ -10,8 +10,15 @@ class InitialPage extends StatefulWidget {
 class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'HealthyCook',
+          style: TextStyle(fontSize: 20),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+      ),
     );
   }
 }

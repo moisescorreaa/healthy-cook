@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/colors_theme_fix.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 
 class AddRecipeForm extends StatefulWidget {
   const AddRecipeForm({super.key});
@@ -15,15 +17,29 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Upload Image',
-                style: TextStyle(
+              IconButton(
+                onPressed: () {},
+                icon: LineIcon(
+                  LineIcons.image,
                   color: foregroundColor,
-                  fontSize: 16.0,
+                  size: 200,
                 ),
-              ),
+              )
             ],
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: "Título",
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
         ],
       ),

@@ -29,6 +29,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
               )
             ],
           ),
+          const SizedBox(height: 10),
           TextFormField(
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
@@ -38,6 +39,73 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            maxLines: 5,
+            decoration: InputDecoration(
+              labelText: "Descrição",
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            maxLines: 5,
+            decoration: InputDecoration(
+              labelText: "Ingredientes",
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            maxLines: null,
+            decoration: InputDecoration(
+              labelText: "Tempo de preparo (em minutos)",
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            maxLines: null,
+            decoration: InputDecoration(
+              labelText: "Modo de Preparo",
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text("Salvar"),
               ),
             ),
           ),

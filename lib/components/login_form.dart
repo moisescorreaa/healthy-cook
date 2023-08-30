@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -51,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -63,7 +63,16 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 Navigator.of(context).pushReplacementNamed('/home');
               },
-              child: const Text("Login"),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                "Login",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           const SizedBox(height: 10),

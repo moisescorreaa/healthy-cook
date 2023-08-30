@@ -1,12 +1,16 @@
-com.example.healthy_cook.app-jetified-window-1.0.0-beta04-0 /home/moises/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/res
-com.example.healthy_cook.app-jetified-annotation-experimental-1.1.0-1 /home/moises/.gradle/caches/transforms-3/6c0c163cc77ae6c91f9f7dfcd179c29c/transformed/jetified-annotation-experimental-1.1.0/res
-com.example.healthy_cook.app-core-1.6.0-2 /home/moises/.gradle/caches/transforms-3/7e9df2ac2213a6bd3cef0f2f27870d79/transformed/core-1.6.0/res
-com.example.healthy_cook.app-jetified-window-java-1.0.0-beta04-3 /home/moises/.gradle/caches/transforms-3/ae81e06d24c799147c26814497a2a305/transformed/jetified-window-java-1.0.0-beta04/res
-com.example.healthy_cook.app-debug-4 /home/moises/Documentos/Projetos - Codes/healthy_cook/android/app/src/debug/res
-com.example.healthy_cook.app-main-5 /home/moises/Documentos/Projetos - Codes/healthy_cook/android/app/src/main/res
-com.example.healthy_cook.app-pngs-6 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/pngs/debug
-com.example.healthy_cook.app-resValues-7 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/resValues/debug
-com.example.healthy_cook.app-rs-8 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/rs/debug
-com.example.healthy_cook.app-mergeDebugResources-9 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
-com.example.healthy_cook.app-mergeDebugResources-10 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
-com.example.healthy_cook.app-merged_res-11 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/merged_res/debug
+com.example.healthy_cook.app-jetified-play-services-basement-18.1.0-0 /home/moises/.gradle/caches/transforms-3/006bbe5a907188cb8f989af846bf78a4/transformed/jetified-play-services-basement-18.1.0/res
+com.example.healthy_cook.app-jetified-firebase-common-20.3.2-1 /home/moises/.gradle/caches/transforms-3/0d80e9c6f7604b4a9011703a89be7119/transformed/jetified-firebase-common-20.3.2/res
+com.example.healthy_cook.app-jetified-window-java-1.0.0-beta04-2 /home/moises/.gradle/caches/transforms-3/5a5a752a30ef8f927b89ee5d02868eb5/transformed/jetified-window-java-1.0.0-beta04/res
+com.example.healthy_cook.app-jetified-window-1.0.0-beta04-3 /home/moises/.gradle/caches/transforms-3/86a1a9f6804c8fc691a553244f0de821/transformed/jetified-window-1.0.0-beta04/res
+com.example.healthy_cook.app-jetified-annotation-experimental-1.1.0-4 /home/moises/.gradle/caches/transforms-3/9199ba66b232e9fc78c08871acc9a68c/transformed/jetified-annotation-experimental-1.1.0/res
+com.example.healthy_cook.app-core-1.6.0-5 /home/moises/.gradle/caches/transforms-3/9df09c476a8966dff0ab2c589910f62f/transformed/core-1.6.0/res
+com.example.healthy_cook.app-debug-6 /home/moises/Documentos/Projetos - Codes/healthy_cook/android/app/src/debug/res
+com.example.healthy_cook.app-main-7 /home/moises/Documentos/Projetos - Codes/healthy_cook/android/app/src/main/res
+com.example.healthy_cook.app-google-services-8 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/google-services/debug
+com.example.healthy_cook.app-pngs-9 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/pngs/debug
+com.example.healthy_cook.app-resValues-10 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/resValues/debug
+com.example.healthy_cook.app-rs-11 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/generated/res/rs/debug
+com.example.healthy_cook.app-mergeDebugResources-12 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.example.healthy_cook.app-mergeDebugResources-13 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.example.healthy_cook.app-merged_res-14 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/merged_res/debug
+com.example.healthy_cook.app-packaged_res-15 /home/moises/Documentos/Projetos - Codes/healthy_cook/build/firebase_core/intermediates/packaged_res/debug

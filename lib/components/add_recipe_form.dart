@@ -13,99 +13,106 @@ class AddRecipeForm extends StatefulWidget {
 class _AddRecipeFormState extends State<AddRecipeForm> {
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: LineIcon(
+          GestureDetector(
+            onTap: () {
+              // Implementar ação para selecionar imagem
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 200,
+              child: Center(
+                child: LineIcon(
                   LineIcons.image,
                   color: foregroundColor,
-                  size: 200,
+                  size: 100,
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelText: "Título",
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
           const SizedBox(height: 10),
           TextFormField(
             keyboardType: TextInputType.text,
-            maxLines: 5,
+            decoration: InputDecoration(
+              labelText: "Categoria",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
             decoration: InputDecoration(
               labelText: "Descrição",
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
           const SizedBox(height: 10),
           TextFormField(
-            keyboardType: TextInputType.text,
-            maxLines: 5,
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
             decoration: InputDecoration(
               labelText: "Ingredientes",
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
           const SizedBox(height: 10),
           TextFormField(
             keyboardType: TextInputType.number,
-            maxLines: null,
             decoration: InputDecoration(
               labelText: "Tempo de preparo (em minutos)",
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
           const SizedBox(height: 10),
           TextFormField(
-            keyboardType: TextInputType.text,
-            maxLines: null,
+            keyboardType: TextInputType.multiline,
+            maxLines: 5,
             decoration: InputDecoration(
               labelText: "Modo de Preparo",
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Salvar"),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: 300,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                "Salvar",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ),

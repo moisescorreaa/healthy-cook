@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">252143217416-i2ph5kbn8caef2crggo5ingq5mvhvgdn.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">252143217416</string>
+    <string name="google_api_key" translatable="false">AIzaSyAUEo11TDOK-iqufKVzQ-IUrPhidEIvNgE</string>
+    <string name="google_app_id" translatable="false">1:252143217416:android:4b119b582711b5e3921abd</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAUEo11TDOK-iqufKVzQ-IUrPhidEIvNgE</string>
+    <string name="google_storage_bucket" translatable="false">healthy-cook-79dd3.appspot.com</string>
+    <string name="project_id" translatable="false">healthy-cook-79dd3</string>
+</resources>

@@ -1,4 +1,4 @@
-#Fri Jul 07 16:12:33 BRT 2023
+#Mon Aug 14 15:50:16 BRT 2023
 base.0=/home/moises/Documentos/Projetos - Codes/healthy_cook/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

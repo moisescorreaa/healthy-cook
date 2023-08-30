@@ -33,7 +33,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -51,7 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -67,7 +67,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -84,7 +84,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     'Termos de uso',
                   ))
             ],
@@ -94,7 +94,16 @@ class _RegisterFormState extends State<RegisterForm> {
             width: 300,
             child: ElevatedButton(
               onPressed: () {},
-              child: const Text("Cadastrar"),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                "Cadastrar",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           const SizedBox(height: 10),

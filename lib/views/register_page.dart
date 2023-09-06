@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/components/login_google.dart';
 import 'package:healthy_cook/components/register_form.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -54,16 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   )
                 ],
               ),
-              const SizedBox(
-                child: Text(
-                  "ou",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              LoginGoogle(),
             ],
           ),
         ),

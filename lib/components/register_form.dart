@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -101,22 +100,48 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  void showAlert(value, String? respostaErro) {
+  void showAlert(value, String? errorAnswer) {
     if (value == true) {
-      QuickAlert.show(
+      showDialog(
           context: context,
-          title: 'Cheque seu email!',
-          confirmBtnText: 'OK',
-          onConfirmBtnTap: () =>
-              Navigator.of(context).popAndPushNamed('/login'),
-          text:
-              '\nEstamos animados para acompanhar você nessa jornada culinária!!!\n\nEnviamos um email para ${auth.currentUser?.email} com um link de confirmação!',
-          type: QuickAlertType.success);
+          builder: (context) {
+            return Dialog(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Cheque seu email!',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
+                      Text(
+                          '\nEstamos animados para acompanhar você nessa jornada culinária!!!\n\nEnviamos um email para ${auth.currentUser?.email} com um link de confirmação!',
+                          style: const TextStyle(fontSize: 14)),
+                      Container(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () =>
+                                Navigator.of(context).popAndPushNamed('/login'),
+                            child: const Text("OK"),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
       _confirmEmail();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(respostaErro!),
+          content: Text(errorAnswer!),
         ),
       );
     }

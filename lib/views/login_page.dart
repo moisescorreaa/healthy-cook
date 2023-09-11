@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/login_form.dart';
-import 'package:healthy_cook/components/register_google.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -62,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              RegisterGoogle(),
             ],
           ),
         ),

@@ -5,8 +5,6 @@ import 'package:healthy_cook/views/login_page.dart';
 import 'package:healthy_cook/views/register_page.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

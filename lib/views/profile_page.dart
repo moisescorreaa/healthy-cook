@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/colors_theme_fix.dart';
+import 'package:healthy_cook/components/edit_profile_form.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -24,7 +25,14 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         body: const SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Column(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              EditProfileForm(),
+            ],
+          ),
         ));
   }
 }

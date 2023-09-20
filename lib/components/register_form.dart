@@ -163,7 +163,8 @@ class _RegisterFormState extends State<RegisterForm> {
   void _saveUserData() {
     try {
       auth.currentUser?.updateDisplayName(username);
-      auth.currentUser?.updatePhotoURL('assets/images/user.png');
+      auth.currentUser?.updatePhotoURL(
+          'https://firebasestorage.googleapis.com/v0/b/healthy-cook-79dd3.appspot.com/o/defaultImages%2Fuser.png?alt=media&token=622520e8-d262-4253-8682-565fb9b8228b');
     } catch (e) {
       if (kDebugMode) {
         print(e);

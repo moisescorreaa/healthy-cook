@@ -53,7 +53,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
       if (image != null) {
         String refImage =
-            'images/${auth.currentUser?.uid}/perfil/img-${DateTime.now().toString()}.jpg';
+            'images/${auth.currentUser?.uid}/profile/img-${DateTime.now().toString()}.jpg';
         Reference storageRef = storage.ref().child(refImage);
         await storageRef.putFile(File(image!.path));
         urlImage = await storageRef.getDownloadURL();

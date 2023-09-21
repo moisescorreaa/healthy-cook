@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/colors_theme_fix.dart';
+import 'package:healthy_cook/components/home_feed.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -22,9 +23,10 @@ class _InitialPageState extends State<InitialPage> {
           automaticallyImplyLeading: false,
           centerTitle: true,
         ),
-        body: const SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(),
+        body: const Column(
+          children: [
+            HomeFeed(),
+          ],
         ));
   }
 }

@@ -22,7 +22,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   XFile? image;
   String? title;
@@ -83,7 +83,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
           'ingredients': ingredients,
           'timeToPrepare': timeToPrepare,
           'howToPrepare': howToPrepare,
-          'curtidas': [],
+          'likes': [],
           'dateTime': DateTime.now(),
         });
 

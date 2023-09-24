@@ -34,12 +34,22 @@ class _SearchAlgoliaState extends State<SearchAlgolia> {
             if (snapshot.hasData) {
               final response = snapshot.data;
               final hits = response?.hits.toList() ?? [];
-              // 3.2 Display your search hits
+
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: hits.length,
-                itemBuilder: (_, i) => ListTile(title: Text(hits[i]['title'])),
+                itemBuilder: (_, i) => ListTile(
+                  leading: Image.network(
+                    hits[i]['urlImage'],
+                    fit: BoxFit.contain,
+                    width: 100,
+                    height: 100,
+                  ),
+                  title: Text(hits[i]['title']),
+                  subtitle: Text(
+                      '${hits[i]['likes'].length.toString()} ${hits[i]['likes'] == 1 ? "curtida" : "curtidas"}'),
+                ),
               );
             } else {
               return const Center(child: CircularProgressIndicator());

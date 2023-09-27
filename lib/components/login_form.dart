@@ -47,7 +47,6 @@ class _LoginFormState extends State<LoginForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        // salvar os dados no banco de dados...
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
         // ignore: use_build_context_synchronously

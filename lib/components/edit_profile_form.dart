@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:healthy_cook/components/update_user_data_recipes.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileForm extends StatefulWidget {
@@ -60,11 +61,13 @@ class _EditProfileFormState extends State<EditProfileForm> {
         setState(() => urlImage);
 
         auth.currentUser?.updatePhotoURL(urlImage);
+        updatePhotoUserURLInRecipe(urlImage);
         changedData = true;
       }
 
       if (newUsername != null && newUsername!.isNotEmpty) {
         auth.currentUser?.updateDisplayName(newUsername);
+        updateUsernameUserInRecipe(newUsername);
         setState(() => username = newUsername);
         changedData = true;
       }

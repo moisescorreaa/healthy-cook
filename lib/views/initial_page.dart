@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/colors_theme_fix.dart';
-import 'package:healthy_cook/components/home_feed.dart';
+import 'package:healthy_cook/components/home_cards.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});

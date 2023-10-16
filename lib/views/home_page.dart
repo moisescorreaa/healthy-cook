@@ -54,19 +54,19 @@ class _HomePageState extends State<HomePage> {
         tabs: const [
           GButton(
             icon: LineIcons.home,
-            text: 'Home',
+            text: 'Início',
           ),
           GButton(
             icon: LineIcons.plus,
-            text: 'Add',
+            text: 'Adicionar',
           ),
           GButton(
             icon: LineIcons.search,
-            text: 'Search',
+            text: 'Pesquisa',
           ),
           GButton(
             icon: LineIcons.user,
-            text: 'Profile',
+            text: 'Perfil',
           )
         ],
         backgroundColor: backgroundColor,

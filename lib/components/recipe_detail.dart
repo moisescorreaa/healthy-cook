@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,6 +13,7 @@ class RecipeDetail extends StatefulWidget {
 
 class _RecipeDetailState extends State<RecipeDetail> {
   late Stream<DocumentSnapshot> _recipeStream;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -27,6 +29,12 @@ class _RecipeDetailState extends State<RecipeDetail> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes da Receita'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: _recipeStream,
@@ -37,6 +45,7 @@ class _RecipeDetailState extends State<RecipeDetail> {
             final title = recipeData['title'];
             final description = recipeData['description'];
             final ingredients = recipeData['ingredients'];
+            final timeToPrepare = recipeData['timeToPrepare'];
             final howToPrepare = recipeData['howToPrepare'];
             final photoUser = recipeData['photoUser'];
             final nameUser = recipeData['nameUser'];
@@ -107,6 +116,18 @@ class _RecipeDetailState extends State<RecipeDetail> {
                           style: const TextStyle(
                             fontSize: 16,
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Tempo de Preparo',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "${timeToPrepare.toString()} minutos",
+                          style: const TextStyle(fontSize: 18),
                         ),
                         const SizedBox(height: 16),
                         const Text(

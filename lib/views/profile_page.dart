@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/colors_theme_fix.dart';
 import 'package:healthy_cook/components/edit_profile_form.dart';
+import 'package:healthy_cook/components/recipe_list.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -31,6 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 30,
               ),
               EditProfileForm(),
+              SizedBox(
+                height: 30,
+              ),
+              RecipeList(),
             ],
           ),
         ));

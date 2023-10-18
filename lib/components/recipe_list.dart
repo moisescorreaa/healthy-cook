@@ -12,6 +12,7 @@ class RecipeList extends StatefulWidget {
 
 class _RecipeListState extends State<RecipeList> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   void navigateToRecipeDetail(DocumentSnapshot documentSnapshot) {
     Navigator.push(
@@ -28,7 +29,7 @@ class _RecipeListState extends State<RecipeList> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
+        stream: db
             .collection('recipes')
             .where('uidUser', isEqualTo: auth.currentUser?.uid)
             .snapshots(),

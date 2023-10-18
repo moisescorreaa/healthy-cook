@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthy_cook/components/edit_recipe.dart';
 
 class RecipeDetailOwner extends StatefulWidget {
   final DocumentSnapshot recipeDocument;
 
-  RecipeDetailOwner({required this.recipeDocument});
+  const RecipeDetailOwner({super.key, required this.recipeDocument});
 
   @override
   _RecipeDetailOwnerState createState() => _RecipeDetailOwnerState();
@@ -14,14 +15,24 @@ class RecipeDetailOwner extends StatefulWidget {
 class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
   late Stream<DocumentSnapshot> _recipeStream;
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  navigateToEditDetailRecipe(DocumentSnapshot documentSnapshot) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditRecipe(
+          recipeDocument: documentSnapshot,
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    _recipeStream = FirebaseFirestore.instance
-        .collection('recipes')
-        .doc(widget.recipeDocument.id)
-        .snapshots();
+    _recipeStream =
+        db.collection('recipes').doc(widget.recipeDocument.id).snapshots();
   }
 
   @override
@@ -35,14 +46,6 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.edit,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: _recipeStream,
@@ -163,6 +166,50 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                         ),
                       ],
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsetsDirectional.all(10),
+                        child: SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                navigateToEditDetailRecipe(recipeData),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            child: const Text(
+                              "Editar",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () => {},
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            child: const Text(
+                              "Excluir",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

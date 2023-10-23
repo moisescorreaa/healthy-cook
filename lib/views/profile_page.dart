@@ -35,6 +35,18 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 30,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
               RecipeList(),
             ],
           ),

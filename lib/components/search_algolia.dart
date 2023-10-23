@@ -1,6 +1,8 @@
 import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'package:healthy_cook/components/recipe_detail_algolia.dart';
+
 class SearchAlgolia extends StatefulWidget {
   const SearchAlgolia({Key? key}) : super(key: key);
 
@@ -40,6 +42,16 @@ class _SearchAlgoliaState extends State<SearchAlgolia> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: hits.length,
                 itemBuilder: (_, i) => ListTile(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipeDetailAlgolia(
+                          recipeDocumentId: hits[i]['objectID'],
+                        ),
+                      ),
+                    ),
+                  },
                   leading: Image.network(
                     hits[i]['urlImage'],
                     fit: BoxFit.contain,

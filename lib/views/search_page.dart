@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/components/colors_theme_fix.dart';
 import 'package:healthy_cook/components/search_algolia.dart';
 
 class SearchPage extends StatefulWidget {
@@ -18,8 +17,6 @@ class _SearchPageState extends State<SearchPage> {
             'HealthyCook',
             style: TextStyle(fontSize: 20),
           ),
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
         ),

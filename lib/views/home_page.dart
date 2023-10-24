@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:healthy_cook/components/colors_theme_fix.dart';
 import 'package:healthy_cook/views/add_page.dart';
 import 'package:healthy_cook/views/initial_page.dart';
 import 'package:healthy_cook/views/profile_page.dart';
@@ -32,7 +31,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    changeNavTheme(context);
     return Scaffold(
       body: PageView(
         controller: pController,
@@ -69,9 +67,6 @@ class _HomePageState extends State<HomePage> {
             text: 'Perfil',
           )
         ],
-        backgroundColor: backgroundColor,
-        color: foregroundColor,
-        activeColor: activeColor,
         onTabChange: (page) => pController.animateToPage(page,
             duration: const Duration(milliseconds: 400), curve: Curves.easeIn),
       ),

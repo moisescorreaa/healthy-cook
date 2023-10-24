@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/add_recipe_form.dart';
-import 'package:healthy_cook/components/colors_theme_fix.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -18,8 +17,6 @@ class _AddPageState extends State<AddPage> {
             'HealthyCook',
             style: TextStyle(fontSize: 20),
           ),
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
         ),

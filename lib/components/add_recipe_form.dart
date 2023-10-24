@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/components/colors_theme_fix.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
@@ -139,10 +138,9 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         height: 200,
-                        child: Center(
+                        child: const Center(
                           child: LineIcon(
                             LineIcons.image,
-                            color: foregroundColor,
                             size: 100,
                           ),
                         ),

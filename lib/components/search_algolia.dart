@@ -36,6 +36,19 @@ class _SearchAlgoliaState extends State<SearchAlgolia> {
               final response = snapshot.data;
               final hits = response?.hits.toList() ?? [];
 
+              if (hits.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Text(
+                      'Não há resultados para sua pesquisa',
+                    ),
+                  ),
+                );
+              }
+
+              hits.sort(
+                  (a, b) => b['likes'].length.compareTo(a['likes'].length));
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -60,7 +73,6 @@ class _SearchAlgoliaState extends State<SearchAlgolia> {
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                               image: NetworkImage(hits[i]['urlImage']),
                               fit: BoxFit.cover,

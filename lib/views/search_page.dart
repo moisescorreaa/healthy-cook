@@ -21,6 +21,6 @@ class _SearchPageState extends State<SearchPage> {
           centerTitle: true,
         ),
         body: const SingleChildScrollView(
-            physics: ScrollPhysics(), child: SearchAlgolia()));
+            physics: AlwaysScrollableScrollPhysics(), child: SearchAlgolia()));
   }
 }

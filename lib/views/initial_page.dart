@@ -44,7 +44,7 @@ class _InitialPageState extends State<InitialPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 150,
+                    width: 125,
                     height: 30,
                     child: ElevatedButton(
                       onPressed: () {
@@ -57,7 +57,7 @@ class _InitialPageState extends State<InitialPage> {
                   ),
                   const SizedBox(width: 10),
                   SizedBox(
-                    width: 150,
+                    width: 125,
                     height: 30,
                     child: OutlinedButton(
                       onPressed: () {

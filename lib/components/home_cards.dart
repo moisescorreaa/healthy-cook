@@ -16,8 +16,6 @@ class _HomeFeedState extends State<HomeFeed> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  DateTime? startDate;
-
   void updateLikes(DocumentSnapshot document, List<String> likes) {
     db.collection('recipes').doc(document.id).update({'likes': likes});
   }
@@ -33,16 +31,9 @@ class _HomeFeedState extends State<HomeFeed> {
   }
 
   @override
-  void initState() {
-    startDate = widget.date;
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final uid = auth.currentUser?.uid;
-
+    final startDate = widget.date;
     return Expanded(
       child: StreamBuilder<QuerySnapshot>(
         stream: db

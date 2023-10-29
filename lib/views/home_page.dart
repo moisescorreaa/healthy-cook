@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       initialDate: startDate!,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: now,
       builder: (context, child) {
         return Theme(
           data: ThemeData.light(),
@@ -56,7 +56,8 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: showDatePickerDialog, icon: const LineIcon.filter())
+                onPressed: showDatePickerDialog,
+                icon: const LineIcon.calendar())
           ],
         ),
         body: Column(

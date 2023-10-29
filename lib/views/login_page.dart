@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              LoginForm(),
+              const LoginForm(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

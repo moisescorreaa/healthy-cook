@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,7 @@ class _LoginFormState extends State<LoginForm> {
 
   late String email;
   late String password;
-  String? lostEmail;
+  final lostEmail = TextEditingController();
 
   void showAlert(String? errorAnswer) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -25,44 +27,6 @@ class _LoginFormState extends State<LoginForm> {
         content: Text(errorAnswer!),
       ),
     );
-  }
-
-  void sendPasswordResetEmailFunc(BuildContext context, String email) async {
-    try {
-      await auth.sendPasswordResetEmail(email: email);
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('E-mail de redefinição enviado com sucesso')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Ocorreu um erro ao enviar o e-mail de redefinição')),
-      );
-    }
-  }
-
-  login(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      try {
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamed('/home');
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'wrong-password' || e.code == 'invalid-email') {
-          showAlert('Email ou senha inválidos.');
-        } else if (e.code == 'user-disabled') {
-          showAlert('Esse usuário corresponde a um email desativado.');
-        } else if (e.code == 'user-not-found') {
-          showAlert('Usuário não foi encontrado');
-        }
-      } catch (e) {
-        showAlert('Ocorreu um erro desconhecido');
-      }
-    }
   }
 
   String? _validatePassword(String? value) {
@@ -85,26 +49,65 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
+  login(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+
+        Navigator.of(context).pushNamed('/home');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'wrong-password' || e.code == 'invalid-email') {
+          showAlert('Email ou senha inválidos.');
+        } else if (e.code == 'user-disabled') {
+          showAlert('Esse usuário corresponde a um email desativado.');
+        } else if (e.code == 'user-not-found') {
+          showAlert('Usuário não foi encontrado');
+        }
+      } catch (e) {
+        showAlert('Ocorreu um erro desconhecido');
+      }
+    }
+  }
+
+  void sendEmailResetPassword(BuildContext context, String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('E-mail de redefinição enviado com sucesso')),
+      );
+      Navigator.of(context).pushReplacementNamed('/login');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Ocorreu um erro ao enviar o e-mail de redefinição')),
+      );
+    }
+  }
+
   void showForgotPasswordDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          "Esqueceu a senha?",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+      builder: (context) => SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: AlertDialog(
+          title: const Text(
+            "Esqueceu a senha?",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        content: SingleChildScrollView(
-          child: Column(
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
                 "Insira o seu email para redefinir a senha.",
+                style: TextStyle(),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                onSaved: (value) => lostEmail = value!,
+                controller: lostEmail,
                 decoration: InputDecoration(
                   labelText: "Email",
                   labelStyle: const TextStyle(
@@ -117,19 +120,26 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
+          actions: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancelar"),
+            ),
+            ElevatedButton(
+              onPressed: () => sendEmailResetPassword(context, lostEmail.text),
+              style: ElevatedButton.styleFrom(),
+              child: const Text("Enviar"),
+            ),
+          ],
         ),
-        actions: [
-          OutlinedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancelar"),
-          ),
-          ElevatedButton(
-            onPressed: () => sendPasswordResetEmailFunc(context, lostEmail!),
-            child: const Text("Enviar"),
-          ),
-        ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    lostEmail.dispose();
+    super.dispose();
   }
 
   @override

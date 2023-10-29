@@ -127,10 +127,6 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                     height: 300,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
                       image: DecorationImage(
                         image: NetworkImage(urlImage),
                         fit: BoxFit.fitWidth,

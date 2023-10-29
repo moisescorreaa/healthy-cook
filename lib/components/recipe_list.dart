@@ -67,8 +67,7 @@ class _RecipeListState extends State<RecipeList> {
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black.withOpacity(0.5),
+                            color: Colors.black.withOpacity(0.75),
                           ),
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(

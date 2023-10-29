@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/recipe_detail.dart';
 
 class HomeFeed extends StatefulWidget {
-  const HomeFeed({super.key});
+  final DateTime? date;
+
+  const HomeFeed({super.key, required this.date});
 
   @override
   State<HomeFeed> createState() => _HomeFeedState();
@@ -13,6 +15,8 @@ class HomeFeed extends StatefulWidget {
 class _HomeFeedState extends State<HomeFeed> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  DateTime? startDate;
 
   void updateLikes(DocumentSnapshot document, List<String> likes) {
     db.collection('recipes').doc(document.id).update({'likes': likes});
@@ -29,12 +33,22 @@ class _HomeFeedState extends State<HomeFeed> {
   }
 
   @override
+  void initState() {
+    startDate = widget.date;
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final uid = auth.currentUser?.uid;
 
     return Expanded(
       child: StreamBuilder<QuerySnapshot>(
-        stream: db.collection('recipes').snapshots(),
+        stream: db
+            .collection('recipes')
+            .where('dateTime', isGreaterThanOrEqualTo: startDate)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<QueryDocumentSnapshot> recipes = snapshot.data!.docs;

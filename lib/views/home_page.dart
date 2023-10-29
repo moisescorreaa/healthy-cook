@@ -1,75 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:healthy_cook/views/add_page.dart';
-import 'package:healthy_cook/views/initial_page.dart';
-import 'package:healthy_cook/views/profile_page.dart';
-import 'package:healthy_cook/views/search_page.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:healthy_cook/components/home_cards.dart';
+import 'package:line_icons/line_icon.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedPage = 0;
-  late PageController pController;
+  DateTime now = DateTime.now();
+  DateTime? startDate;
+
+  initializeDate() {
+    startDate = DateTime(now.year, now.month, 1);
+  }
+
+  showDatePickerDialog() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: startDate!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        startDate = pickedDate;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    pController = PageController(initialPage: selectedPage);
-  }
-
-  setSelectedPage(page) {
-    setState(() {
-      selectedPage = page;
-    });
+    initializeDate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: pController,
-        onPageChanged: setSelectedPage,
-        children: const [
-          InitialPage(),
-          AddPage(),
-          SearchPage(),
-          ProfilePage(),
-        ],
-      ),
-      bottomNavigationBar: GNav(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        selectedIndex: selectedPage,
-        gap: 8,
-        haptic: true,
-        tabBorderRadius: 45,
-        curve: Curves.easeInToLinear,
-        tabs: const [
-          GButton(
-            icon: LineIcons.home,
-            text: 'Início',
+        appBar: AppBar(
+          title: const Text(
+            'HealthyCook',
+            style: TextStyle(fontSize: 20),
           ),
-          GButton(
-            icon: LineIcons.plus,
-            text: 'Adicionar',
-          ),
-          GButton(
-            icon: LineIcons.search,
-            text: 'Pesquisa',
-          ),
-          GButton(
-            icon: LineIcons.user,
-            text: 'Perfil',
-          )
-        ],
-        onTabChange: (page) => pController.animateToPage(page,
-            duration: const Duration(milliseconds: 400), curve: Curves.easeIn),
-      ),
-    );
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: showDatePickerDialog, icon: const LineIcon.filter())
+          ],
+        ),
+        body: Column(
+          children: [
+            HomeFeed(
+              date: startDate,
+            ),
+          ],
+        ));
   }
 }

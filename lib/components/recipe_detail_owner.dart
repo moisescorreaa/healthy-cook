@@ -28,6 +28,64 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
     );
   }
 
+  void deleteRecipe() async {
+    try {
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed('/home');
+
+      final recipeRef = widget.recipeDocument.reference;
+
+      await recipeRef.delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Receita excluída com sucesso!'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocorreu um erro ao excluir a receita'),
+        ),
+      );
+    }
+  }
+
+  deletePopUp() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Você tem certeza que deseja excluir sua receita?'),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => deleteRecipe(),
+                  style: OutlinedButton.styleFrom(),
+                  child: const Text("Continuar"),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(),
+                  child: const Text("Cancelar"),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -195,7 +253,7 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                         child: SizedBox(
                           width: 100,
                           child: ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () => deletePopUp(),
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

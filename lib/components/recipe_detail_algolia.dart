@@ -14,14 +14,13 @@ class RecipeDetailAlgolia extends StatefulWidget {
 class _RecipeDetailAlgoliaState extends State<RecipeDetailAlgolia> {
   late Stream<DocumentSnapshot> _recipeStream;
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    _recipeStream = FirebaseFirestore.instance
-        .collection('recipes')
-        .doc(widget.recipeDocumentId)
-        .snapshots();
+    _recipeStream =
+        db.collection('recipes').doc(widget.recipeDocumentId).snapshots();
   }
 
   @override

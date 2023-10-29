@@ -43,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pushNamed('/'),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed('/register'),
                     child: const Text(
                       'Cadastre-se aqui',
                       style: TextStyle(

@@ -16,6 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   bool _showPassword = false;
 
   final _formKey = GlobalKey<FormState>();
+  final formKeyDialog = GlobalKey<FormState>();
 
   late String email;
   late String password;
@@ -71,66 +72,77 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void sendEmailResetPassword(BuildContext context, String email) async {
-    try {
-      await auth.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('E-mail de redefinição enviado com sucesso')),
-      );
-      Navigator.of(context).pushReplacementNamed('/login');
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Ocorreu um erro ao enviar o e-mail de redefinição')),
-      );
+    if (formKeyDialog.currentState!.validate()) {
+      try {
+        await auth.sendPasswordResetEmail(email: email);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('E-mail de redefinição enviado com sucesso')),
+        );
+        Navigator.of(context).pushReplacementNamed('/login');
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text('Ocorreu um erro ao enviar o e-mail de redefinição')),
+        );
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
     }
   }
 
   void showForgotPasswordDialog() {
     showDialog(
       context: context,
-      builder: (context) => SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: AlertDialog(
-          title: const Text(
-            "Esqueceu a senha?",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Insira o seu email para redefinir a senha.",
-                style: TextStyle(),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: lostEmail,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+      builder: (context) => Center(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Form(
+            key: formKeyDialog,
+            child: AlertDialog(
+              title: const Text(
+                "Esqueceu a senha?",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Insira o seu email para redefinir a senha.",
+                    style: TextStyle(),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: lostEmail,
+                    validator: _validateEmail,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Cancelar"),
+                ),
+                ElevatedButton(
+                  onPressed: () =>
+                      sendEmailResetPassword(context, lostEmail.text),
+                  style: ElevatedButton.styleFrom(),
+                  child: const Text("Enviar"),
+                ),
+              ],
+            ),
           ),
-          actions: [
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancelar"),
-            ),
-            ElevatedButton(
-              onPressed: () => sendEmailResetPassword(context, lostEmail.text),
-              style: ElevatedButton.styleFrom(),
-              child: const Text("Enviar"),
-            ),
-          ],
         ),
       ),
     );

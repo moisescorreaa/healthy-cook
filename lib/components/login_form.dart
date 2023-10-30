@@ -56,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
-        Navigator.of(context).pushNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/home');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'wrong-password' || e.code == 'invalid-email') {
           showAlert('Email ou senha inválidos.');

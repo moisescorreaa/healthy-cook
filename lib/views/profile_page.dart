@@ -16,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  void logoutPopUp() async {
+  void logoutPopUp(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: const Text("Cancelar"),
           ),
           ElevatedButton(
-            onPressed: () => logout(),
+            onPressed: () => logout(context),
             style: ElevatedButton.styleFrom(),
             child: const Text("Confirmar"),
           ),
@@ -42,13 +42,14 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void logout() async {
+  void logout(BuildContext context) async {
     try {
       await auth.signOut();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logout realizado com sucesso')),
       );
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.of(context).pushReplacementNamed('/');
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erro ao realizar logout')),
@@ -68,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () => logoutPopUp(),
+                onPressed: () => logoutPopUp(context),
                 icon: const LineIcon.alternateSignOut())
           ],
         ),

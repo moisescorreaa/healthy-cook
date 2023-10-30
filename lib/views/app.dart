@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/color_schemes.dart';
 import 'package:healthy_cook/views/initial_page.dart';
-
 import 'package:healthy_cook/views/main_management_page.dart';
 import 'package:healthy_cook/views/login_page.dart';
 import 'package:healthy_cook/views/register_page.dart';
@@ -11,8 +9,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       routes: {
         '/': (context) => const InitialPage(),
         '/register': (context) => const RegisterPage(),

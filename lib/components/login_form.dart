@@ -25,7 +25,10 @@ class _LoginFormState extends State<LoginForm> {
   void showAlert(String? errorAnswer) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(errorAnswer!),
+        backgroundColor: Colors.red,
+        content: Text(
+          errorAnswer!,
+        ),
       ),
     );
   }
@@ -77,14 +80,21 @@ class _LoginFormState extends State<LoginForm> {
         await auth.sendPasswordResetEmail(email: email);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('E-mail de redefinição enviado com sucesso')),
+            backgroundColor: Color(0xFF3FA63C),
+            content: Text(
+              'E-mail de redefinição enviado com sucesso',
+            ),
+          ),
         );
         Navigator.of(context).pushReplacementNamed('/login');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content:
-                  Text('Ocorreu um erro ao enviar o e-mail de redefinição')),
+            backgroundColor: Colors.red,
+            content: Text(
+              'Ocorreu um erro ao enviar o e-mail de redefinição',
+            ),
+          ),
         );
         Navigator.of(context).pushReplacementNamed('/login');
       }
@@ -131,14 +141,23 @@ class _LoginFormState extends State<LoginForm> {
               ),
               actions: [
                 OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xFF1C4036))),
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text("Cancelar"),
+                  child: const Text(
+                    "Cancelar",
+                    style: TextStyle(color: Color(0xFF1C4036)),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () =>
                       sendEmailResetPassword(context, lostEmail.text),
-                  style: ElevatedButton.styleFrom(),
-                  child: const Text("Enviar"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1C4036)),
+                  child: const Text(
+                    "Enviar",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -165,9 +184,9 @@ class _LoginFormState extends State<LoginForm> {
             'Login',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            ),
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1C4036)),
           ),
           const SizedBox(height: 20),
           SizedBox(
@@ -176,7 +195,10 @@ class _LoginFormState extends State<LoginForm> {
               keyboardType:
                   TextInputType.emailAddress, // aparece o @ no teclado
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.email),
+                prefixIcon: const Icon(
+                  Icons.email,
+                  color: Color(0xFF1C4036),
+                ),
                 labelText: "Email",
                 labelStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -194,8 +216,12 @@ class _LoginFormState extends State<LoginForm> {
             width: 300,
             child: TextFormField(
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.key),
+                prefixIcon: const Icon(
+                  Icons.key,
+                  color: Color(0xFF1C4036),
+                ),
                 suffixIcon: IconButton(
+                  color: const Color(0xFF1C4036),
                   icon: Icon(
                     _showPassword ? Icons.visibility : Icons.visibility_off,
                   ),
@@ -232,8 +258,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: const Text(
                   'Clique aqui',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontWeight: FontWeight.bold, color: Color(0xFF3FA63C)),
                 ),
               )
             ],
@@ -244,6 +269,7 @@ class _LoginFormState extends State<LoginForm> {
             child: ElevatedButton(
               onPressed: () => login(context),
               style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3FA63C),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -251,7 +277,8 @@ class _LoginFormState extends State<LoginForm> {
               ),
               child: const Text(
                 "Login",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
           ),

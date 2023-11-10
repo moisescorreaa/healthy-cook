@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ],
               ),
-              RegisterForm(),
+              const RegisterForm(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -47,8 +47,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: const Text(
                       ' Faça login aqui',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3FA63C)),
                     ),
                   )
                 ],

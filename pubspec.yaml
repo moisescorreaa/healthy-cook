@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^11.2.6
   algolia: ^1.1.2
   algolia_helper_flutter: ^0.4.1
+  dynamic_color: ^1.6.8
 
 
 

@@ -15,27 +15,30 @@ class _InitialPageState extends State<InitialPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Image.asset(
-                'assets/images/logotipo.png',
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.center,
+            SizedBox(
+              height: 200,
+              child: Expanded(
+                child: Image.asset(
+                  'assets/images/logotipo.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ),
               ),
             ),
-            const SizedBox(height: 20),
             const Flexible(
               child: Text(
                 "Olá, seja bem-vindo",
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1C4036)),
               ),
             ),
             const SizedBox(height: 20),
             const Flexible(
               child: Text(
                 'Entre com sua conta para continuar',
+                style: TextStyle(color: Color(0xFF1C4036)),
               ),
             ),
             const SizedBox(height: 20),
@@ -47,11 +50,14 @@ class _InitialPageState extends State<InitialPage> {
                     width: 125,
                     height: 30,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF3FA63C)),
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/login');
                       },
                       child: const Text(
                         'Entrar',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

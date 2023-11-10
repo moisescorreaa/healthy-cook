@@ -58,69 +58,67 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   }
 
   Future<void> saveRecipe() async {
-    if (_formKey.currentState!.validate()) {
-      if (image != null) {
-        try {
-          String refImage =
-              'images/${auth.currentUser?.uid}/recipes/img-${DateTime.now().toString()}.jpg';
-          Reference storageRef = FirebaseStorage.instance.ref().child(refImage);
-          await storageRef.putFile(File(image!.path));
+    if (_formKey.currentState!.validate() && image != null) {
+      try {
+        String refImage =
+            'images/${auth.currentUser?.uid}/recipes/img-${DateTime.now().toString()}.jpg';
+        Reference storageRef = FirebaseStorage.instance.ref().child(refImage);
+        await storageRef.putFile(File(image!.path));
 
-          String urlImage = await storageRef.getDownloadURL();
+        String urlImage = await storageRef.getDownloadURL();
 
-          CollectionReference refRecipes = db.collection('recipes');
-          await refRecipes.add({
-            'nameUser': auth.currentUser?.displayName,
-            'photoUser': auth.currentUser?.photoURL,
-            'uidUser': auth.currentUser?.uid,
-            'refImage': refImage,
-            'urlImage': urlImage,
-            'title': title,
-            'description': description,
-            'ingredients': ingredients,
-            'timeToPrepare': timeToPrepare,
-            'howToPrepare': howToPrepare,
-            'likes': [],
-            'dateTime': DateTime.now(),
-          });
+        CollectionReference refRecipes = db.collection('recipes');
+        await refRecipes.add({
+          'nameUser': auth.currentUser?.displayName,
+          'photoUser': auth.currentUser?.photoURL,
+          'uidUser': auth.currentUser?.uid,
+          'refImage': refImage,
+          'urlImage': urlImage,
+          'title': title,
+          'description': description,
+          'ingredients': ingredients,
+          'timeToPrepare': timeToPrepare,
+          'howToPrepare': howToPrepare,
+          'likes': [],
+          'dateTime': DateTime.now(),
+        });
 
-          setState(() {
-            image = null;
-            title = '';
-            description = '';
-            ingredients = '';
-            timeToPrepare = null;
-            howToPrepare = '';
-            titleController.clear();
-            descriptionController.clear();
-            timeToPrepareController.clear();
-            howToPrepareController.clear();
-            ingredientsController.clear();
-          });
+        setState(() {
+          image = null;
+          title = '';
+          description = '';
+          ingredients = '';
+          timeToPrepare = null;
+          howToPrepare = '';
+          titleController.clear();
+          descriptionController.clear();
+          timeToPrepareController.clear();
+          howToPrepareController.clear();
+          ingredientsController.clear();
+        });
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Receita postada com sucesso!'),
-            ),
-          );
-        } catch (e) {
-          // Lida com erros, se houver
-          if (kDebugMode) {
-            print('Erro ao salvar a receita: $e');
-          }
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ocorreu um erro ao postar a receita'),
-            ),
-          );
-        }
-      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Insira uma imagem para a receita'),
+            content: Text('Receita postada com sucesso!'),
+          ),
+        );
+      } catch (e) {
+        // Lida com erros, se houver
+        if (kDebugMode) {
+          print('Erro ao salvar a receita: $e');
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Ocorreu um erro ao postar a receita'),
           ),
         );
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Preencha todos os campos obrigatórios'),
+        ),
+      );
     }
   }
 

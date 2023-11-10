@@ -48,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text(
                       'Cadastre-se aqui',
                       style: TextStyle(
+                        color: Color(0xFF3FA63C),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -22,20 +22,27 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) => AlertDialog(
         title: const Text(
           'Você tem certeza que deseja sair?',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1C4036)),
         ),
         actions: [
           OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            style: OutlinedButton.styleFrom(),
-            child: const Text("Cancelar"),
+            style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Color(0xFF1C4036))),
+            child: const Text(
+              "Cancelar",
+              style: TextStyle(color: Color(0xFF1C4036)),
+            ),
           ),
           ElevatedButton(
             onPressed: () => logout(context),
-            style: ElevatedButton.styleFrom(),
-            child: const Text("Confirmar"),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF18592F)),
+            child: const Text(
+              "Confirmar",
+              style: TextStyle(color: Color(0xFFF2F2F2)),
+            ),
           ),
         ],
       ),
@@ -61,14 +68,16 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xFF9DF6B0),
           title: const Text(
             'HealthyCook',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20, color: Color(0xFF1C4036)),
           ),
           automaticallyImplyLeading: false,
           centerTitle: true,
           actions: [
             IconButton(
+                color: const Color(0xFF1C4036),
                 onPressed: () => logoutPopUp(context),
                 icon: const LineIcon.alternateSignOut())
           ],
@@ -89,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Icon(
                     Icons.menu,
-                    color: Colors.black,
+                    color: Color(0xFF1C4036),
                   ),
                 ],
               ),

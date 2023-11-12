@@ -48,23 +48,32 @@ class _MainManagementPageState extends State<MainManagementPage> {
         gap: 8,
         haptic: true,
         tabBorderRadius: 45,
+        backgroundColor: const Color(0xFF9DF6B0),
         curve: Curves.easeInToLinear,
         tabs: const [
           GButton(
             icon: LineIcons.home,
             text: 'Início',
+            iconColor: Color(0xFF1C4036),
+            textColor: Color(0xFF1C4036),
           ),
           GButton(
             icon: LineIcons.plus,
+            iconColor: Color(0xFF1C4036),
+            textColor: Color(0xFF1C4036),
             text: 'Adicionar',
           ),
           GButton(
             icon: LineIcons.search,
             text: 'Pesquisa',
+            iconColor: Color(0xFF1C4036),
+            textColor: Color(0xFF1C4036),
           ),
           GButton(
             icon: LineIcons.user,
             text: 'Perfil',
+            iconColor: Color(0xFF1C4036),
+            textColor: Color(0xFF1C4036),
           )
         ],
         onTabChange: (page) => pController.animateToPage(page,

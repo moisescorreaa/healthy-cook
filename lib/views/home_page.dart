@@ -25,7 +25,17 @@ class _HomePageState extends State<HomePage> {
       lastDate: now,
       builder: (context, child) {
         return Theme(
-          data: ThemeData.light(),
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFFF2F2F2),
+              onPrimary: Color(0xFF1D7332),
+              onSurface: Color(0xFF1D7332),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xFF1D7332)),
+            ),
+          ),
           child: child!,
         );
       },
@@ -48,16 +58,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xFF9DF6B0),
           title: const Text(
             'HealthyCook',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20, color: Color(0xFF1C4036)),
           ),
           automaticallyImplyLeading: false,
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: showDatePickerDialog,
-                icon: const LineIcon.calendar())
+              onPressed: showDatePickerDialog,
+              icon: const LineIcon.calendar(),
+              color: const Color(0xFF1C4036),
+            )
           ],
         ),
         body: Column(

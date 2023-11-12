@@ -99,7 +99,11 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Receita postada com sucesso!'),
+            backgroundColor: Color(0xFF3FA63C),
+            content: Text(
+              'Receita postada com sucesso!',
+              style: TextStyle(color: Color(0xFFF2F2F2)),
+            ),
           ),
         );
       } catch (e) {
@@ -109,14 +113,24 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
         }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Ocorreu um erro ao postar a receita'),
+            backgroundColor: Colors.red,
+            content: Text(
+              'Ocorreu um erro ao postar a receita',
+              style: TextStyle(color: Color(0xFFF2F2F2)),
+            ),
           ),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Preencha todos os campos obrigatórios'),
+          backgroundColor: Colors.red,
+          content: Text(
+            'Preencha todos os campos obrigatórios',
+            style: TextStyle(
+              color: Color(0xFFF2F2F2),
+            ),
+          ),
         ),
       );
     }
@@ -145,6 +159,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                           child: LineIcon(
                             LineIcons.image,
                             size: 100,
+                            color: Color(0xFF1C4036),
                           ),
                         ),
                       ),
@@ -222,6 +237,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                 child: ElevatedButton(
                   onPressed: () => saveRecipe(),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1C4036),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -229,7 +245,8 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                   ),
                   child: const Text(
                     "Salvar",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFFF2F2F2)),
                   ),
                 ),
               ),

@@ -27,7 +27,11 @@ class _RecipeDetailAlgoliaState extends State<RecipeDetailAlgolia> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalhes da Receita'),
+        backgroundColor: const Color(0xFF9DF6B0),
+        title: const Text(
+          'Detalhes da Receita',
+          style: TextStyle(color: Color(0xFF1C4036)),
+        ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,

@@ -140,6 +140,7 @@ class _HomeFeedState extends State<HomeFeed> {
                                   final isLiked = likes.contains(uid);
 
                                   return IconButton(
+                                    color: Colors.red,
                                     icon: Icon(
                                       isLiked
                                           ? Icons.favorite
@@ -148,13 +149,10 @@ class _HomeFeedState extends State<HomeFeed> {
                                     onPressed: () {
                                       setState(() {
                                         if (isLiked) {
-                                          // Remove a curtida do usuário
                                           likes.remove(uid);
                                         } else {
-                                          // Adicione a curtida do usuário
                                           likes.add(uid!);
                                         }
-                                        // Atualize as likes no Firestore
                                         updateLikes(document, likes);
                                       });
                                     },
@@ -167,9 +165,9 @@ class _HomeFeedState extends State<HomeFeed> {
                             Text(
                               '${likes.length.toString()} ${likes.length == 1 ? "curtida" : "curtidas"}',
                               style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                              ),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red),
                             ),
                             const Spacer(),
                             Padding(
@@ -180,6 +178,7 @@ class _HomeFeedState extends State<HomeFeed> {
                                 child: const Text(
                                   'Ver receita',
                                   style: TextStyle(
+                                    color: Color(0xFF1D7332),
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),

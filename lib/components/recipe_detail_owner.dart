@@ -39,12 +39,14 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+          backgroundColor: Color(0xFF3FA63C),
           content: Text('Receita excluída com sucesso!'),
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+          backgroundColor: Colors.red,
           content: Text('Ocorreu um erro ao excluir a receita'),
         ),
       );
@@ -64,8 +66,12 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () => deleteRecipe(),
-                  style: OutlinedButton.styleFrom(),
-                  child: const Text("Continuar"),
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color(0xFF18592F)),
+                  child: const Text(
+                    "Continuar",
+                    style: TextStyle(color: Color(0xFFF2F2F2)),
+                  ),
                 ),
               ),
             ),
@@ -75,8 +81,11 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(),
-                  child: const Text("Cancelar"),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: const Text(
+                    "Cancelar",
+                    style: TextStyle(color: Color(0xFFF2F2F2)),
+                  ),
                 ),
               ),
             ),
@@ -97,7 +106,11 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalhes da Receita'),
+        backgroundColor: const Color(0xFF9DF6B0),
+        title: const Text(
+          'Detalhes da Receita',
+          style: TextStyle(color: Color(0xFF1C4036)),
+        ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -232,6 +245,7 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                             onPressed: () =>
                                 navigateToEditDetailRecipe(recipeData),
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF18592F),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -239,7 +253,9 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                             ),
                             child: const Text(
                               "Editar",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFF2F2F2)),
                             ),
                           ),
                         ),
@@ -251,6 +267,7 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                           child: ElevatedButton(
                             onPressed: () => deletePopUp(),
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -258,7 +275,9 @@ class _RecipeDetailOwnerState extends State<RecipeDetailOwner> {
                             ),
                             child: const Text(
                               "Excluir",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFF2F2F2)),
                             ),
                           ),
                         ),

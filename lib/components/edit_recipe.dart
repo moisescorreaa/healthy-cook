@@ -74,6 +74,7 @@ class _EditRecipeState extends State<EditRecipe> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+            backgroundColor: Color(0xFF3FA63C),
             content: Text('Receita atualizada com sucesso!'),
           ),
         );
@@ -85,6 +86,7 @@ class _EditRecipeState extends State<EditRecipe> {
         }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+            backgroundColor: Colors.red,
             content: Text('Erro ao atualizar a receita.'),
           ),
         );
@@ -204,6 +206,7 @@ class _EditRecipeState extends State<EditRecipe> {
                   child: ElevatedButton(
                     onPressed: _updateRecipe,
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF18592F),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -211,7 +214,9 @@ class _EditRecipeState extends State<EditRecipe> {
                     ),
                     child: const Text(
                       'Salvar Alterações',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFF2F2F2)),
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/recipe_detail_algolia.dart';
+import 'package:line_icons/line_icon.dart';
 
 class SearchAlgolia extends StatefulWidget {
   const SearchAlgolia({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _SearchAlgoliaState extends State<SearchAlgolia> {
           child: TextField(
             onChanged: (input) => hitsSearcher.query(input),
             decoration: const InputDecoration(
+              suffixIcon: LineIcon.search(),
+              suffixIconColor: Color(0xFF1C4036),
               hintText: 'Digite sua busca',
             ),
           ),

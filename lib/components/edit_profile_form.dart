@@ -75,14 +75,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
       if (changedData) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Dados alterados com sucesso'),
+            backgroundColor: Color(0xFF3FA63C),
+            content: Text(
+              'Dados alterados com sucesso',
+              style: TextStyle(color: Color(0xFFF2F2F2)),
+            ),
             duration: Duration(seconds: 3),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Nenhuma alteração realizada'),
+            backgroundColor: Colors.red,
+            content: Text('Nenhuma alteração realizada',
+                style: TextStyle(color: Color(0xFFF2F2F2))),
             duration: Duration(seconds: 3),
           ),
         );
@@ -95,7 +101,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Ocorreu um erro ao alterar os dados'),
+          backgroundColor: Colors.red,
+          content: Text('Ocorreu um erro ao alterar os dados',
+              style: TextStyle(color: Color(0xFFF2F2F2))),
           duration: Duration(seconds: 3),
         ),
       );
@@ -124,8 +132,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
           title: const Text(
             "Editar Perfil",
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+                fontWeight: FontWeight.bold, color: Color(0xFF1C4036)),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -133,8 +140,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               children: [
                 InkWell(
                   onTap: () => pickImage().then((_) {
-                    setState(() =>
-                        {}); // Atualiza a interface do pop-up após selecionar a imagem
+                    setState(() => {});
                   }),
                   child: Container(
                     width: double.maxFinite,
@@ -158,13 +164,13 @@ class _EditProfileFormState extends State<EditProfileForm> {
                               children: [
                                 Icon(
                                   Icons.insert_photo_outlined,
+                                  color: Color(0xFF1C4036),
                                 ),
                                 SizedBox(width: 8.0),
                                 Text(
                                   'Inserir Imagem',
                                   style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
+                                      fontSize: 16.0, color: Color(0xFF1C4036)),
                                 ),
                               ],
                             ),
@@ -181,8 +187,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   decoration: InputDecoration(
                     labelText: "Novo nome de perfil",
                     labelStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontWeight: FontWeight.bold, color: Color(0xFF1C4036)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -193,12 +198,23 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Color(0xFF1C4036))),
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("Cancelar"),
+                      child: const Text(
+                        "Cancelar",
+                        style: TextStyle(color: Color(0xFF1C4036)),
+                      ),
                     ),
+                    const SizedBox(width: 10),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1C4036)),
                       onPressed: () => changeUserData(),
-                      child: const Text("Enviar"),
+                      child: const Text(
+                        "Enviar",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -243,9 +259,12 @@ class _EditProfileFormState extends State<EditProfileForm> {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1C4036)),
           onPressed: () => changaDataProfile(context),
           child: const Text(
             'Editar perfil',
+            style: TextStyle(color: Color(0xFFF2F2F2)),
           ),
         ),
       ],

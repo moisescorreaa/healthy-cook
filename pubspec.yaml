@@ -45,9 +45,19 @@ dependencies:
   algolia: ^1.1.2
   algolia_helper_flutter: ^0.4.1
   dynamic_color: ^1.6.8
+  flutter_native_splash: ^2.3.6
+  flutter_launcher_icons: ^0.13.1
 
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/logotipo_comfundo.png
 
-
+flutter_icons:
+  image_path: assets/images/logotipo_comfundo.png
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: assets/images/logotipo.png
 
 dev_dependencies:
   flutter_test:

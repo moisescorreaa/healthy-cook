@@ -1,6 +1,7 @@
 import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/recipe_detail_algolia.dart';
+import 'package:healthy_cook/config/hits_searcher.dart';
 import 'package:line_icons/line_icon.dart';
 
 class SearchAlgolia extends StatefulWidget {
@@ -11,12 +12,6 @@ class SearchAlgolia extends StatefulWidget {
 }
 
 class _SearchAlgoliaState extends State<SearchAlgolia> {
-  final hitsSearcher = HitsSearcher(
-    apiKey: '8edf391b71066e8d6a2db8ee78a91c76',
-    applicationID: 'Q5SEP4O5F4',
-    indexName: 'healthycook',
-  );
-
   @override
   Widget build(BuildContext context) {
     return Column(

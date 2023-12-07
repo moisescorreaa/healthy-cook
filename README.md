@@ -1,16 +1,3 @@
 # healthy_cook
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Este projeto foi desenvolvido para implementar um sistema de recuperação de informações em tempo real, através de um mecanismo de busca como o Algolia e um banco de dados em tempo real como o Firebase Firestore em uma aplicação. Seu objetivo principal é demonstrar a resolução tomada para a integração entre Algolia e Firebase Firestore, em um aplicativo Flutter que contribui para a hábitos alimentares saudáveis.

@@ -6,8 +6,11 @@ import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
 
 /// Salva imagens enviadas pelo app no disco e as expõe em `/uploads`.
+///
+/// As URLs são relativas (`/uploads/...`): o app as resolve contra o endereço
+/// da API que ele usa, que muda entre emulador, aparelho e produção.
 class ImageStorage {
-  ImageStorage({required this.directory, required this.publicBaseUrl});
+  ImageStorage({required this.directory});
 
   static const maxBytes = 5 * 1024 * 1024;
 
@@ -17,13 +20,13 @@ class ImageStorage {
     'image/webp': 'webp',
   };
 
+  static const _baseUrl = '/uploads/';
+
   final String directory;
-  final String publicBaseUrl;
   final _uuid = const Uuid();
 
-  String get _baseUrl => '$publicBaseUrl/uploads/';
-
-  /// Lê o campo `image` de uma requisição multipart, salva e retorna a URL.
+  /// Lê o campo `image` de uma requisição multipart, salva a imagem e
+  /// retorna a URL relativa.
   Future<String> save(Request request, {required String folder}) async {
     final contentType = request.headers['content-type'] ?? '';
     if (!contentType.startsWith('multipart/form-data')) {
@@ -60,7 +63,7 @@ class ImageStorage {
     return '$_baseUrl$relativePath';
   }
 
-  /// Remove uma imagem salva por esta API. URLs externas são ignoradas.
+  /// Remove uma imagem salva por esta API. Outras URLs são ignoradas.
   Future<void> deleteByUrl(String? url) async {
     if (url == null || !url.startsWith(_baseUrl)) return;
     final relativePath = url.substring(_baseUrl.length);

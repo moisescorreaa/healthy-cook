@@ -1,97 +1,88 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:healthy_cook/components/recipe_detail_owner.dart';
+import 'package:healthy_cook/components/async_recipes.dart';
+import 'package:healthy_cook/components/recipe_detail.dart';
+import 'package:healthy_cook/components/recipe_image.dart';
+import 'package:healthy_cook/data/models/recipe.dart';
+import 'package:healthy_cook/data/recipe_repository.dart';
 
+/// Receitas do usuário logado, exibidas no perfil.
 class RecipeList extends StatefulWidget {
-  const RecipeList({Key? key});
+  const RecipeList({super.key});
 
   @override
   State<RecipeList> createState() => _RecipeListState();
 }
 
-class _RecipeListState extends State<RecipeList> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore db = FirebaseFirestore.instance;
+class _RecipeListState extends State<RecipeList> with RecipeListLoader {
+  @override
+  Future<List<Recipe>> fetch(RecipeRepository recipes) => recipes.mine();
 
-  void navigateToRecipeDetail(DocumentSnapshot documentSnapshot) {
+  void navigateToRecipeDetail(Recipe recipe) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => RecipeDetailOwner(
-                recipeDocument: documentSnapshot,
-              )),
+      MaterialPageRoute(builder: (context) => RecipeDetail(recipe: recipe)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final recipes = items;
+    if (recipes == null) {
+      return error != null
+          ? LoadError(message: error!, onRetry: reload)
+          : const Center(child: CircularProgressIndicator());
+    }
+    if (recipes.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(24),
+        child: Text('Você ainda não publicou receitas'),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: StreamBuilder<QuerySnapshot>(
-        stream: db
-            .collection('recipes')
-            .where('uidUser', isEqualTo: auth.currentUser?.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final List<QueryDocumentSnapshot> recipes = snapshot.data!.docs;
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                final recipeData = recipes[index];
-                final urlImage = recipeData['urlImage'];
-                final title = recipeData['title'];
-
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: GestureDetector(
-                    onTap: () => navigateToRecipeDetail(recipeData),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: NetworkImage(urlImage),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.75),
-                          ),
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              title,
-                              style: const TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 1,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: recipes.length,
+        itemBuilder: (context, index) {
+          final recipe = recipes[index];
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: GestureDetector(
+              onTap: () => navigateToRecipeDetail(recipe),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    RecipeImage(url: recipe.imageUrl),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        color: Colors.black.withValues(alpha: 0.75),
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Text(
+                          recipe.title,
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+                  ],
+                ),
+              ),
+            ),
+          );
         },
       ),
     );

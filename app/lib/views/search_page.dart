@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/components/search_algolia.dart';
+import 'package:healthy_cook/components/recipe_search.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -22,6 +22,6 @@ class _SearchPageState extends State<SearchPage> {
           centerTitle: true,
         ),
         body: const SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(), child: SearchAlgolia()));
+            physics: AlwaysScrollableScrollPhysics(), child: RecipeSearch()));
   }
 }

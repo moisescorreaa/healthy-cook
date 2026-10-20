@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:healthy_cook/components/feedback.dart';
+import 'package:healthy_cook/components/validators.dart';
+import 'package:healthy_cook/data/api_exception.dart';
+import 'package:healthy_cook/data/auth_controller.dart';
+import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -10,42 +13,21 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   final _formKey = GlobalKey<FormState>();
   late String username;
   late String email;
   late String password;
-  late String? termsMessage;
 
   bool _showPassword = false;
   bool _agreeToTerms = false;
+  bool _loading = false;
 
   String? _validateUsername(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return 'Por favor, insira um nome de usuário';
     }
-    return null;
-  }
-
-  String? _validateEmail(String? value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = RegExp(pattern);
-    if (value!.isEmpty) {
-      return 'Por favor, insira um email';
-    } else if (!regExp.hasMatch(value)) {
-      return 'Por favor, insira um email válido.';
-    } else {
-      return null;
-    }
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, insira uma senha';
-    } else if (value.length < 6) {
-      return 'Por favor, insira uma senha mais forte';
+    if (value.trim().length < 2) {
+      return 'O nome deve ter pelo menos 2 caracteres';
     }
     return null;
   }
@@ -106,123 +88,81 @@ class _RegisterFormState extends State<RegisterForm> {
         });
   }
 
-  void showAlertTerms(String? termsMessage) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(termsMessage!),
-      ),
-    );
-  }
-
-  void showAlert(value, String? errorAnswer) {
-    if (value == true) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Dialog(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Cheque seu email!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Color(0xFF1C4036))),
-                      Text(
-                          '\nEstamos animados para acompanhar você nessa jornada culinária!!!\n\nEnviamos um email para ${auth.currentUser?.email} com um link de confirmação!',
-                          style: const TextStyle(
-                              fontSize: 14, color: Color(0xFF1C4036))),
-                      Container(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF3FA63C)),
-                            onPressed: () =>
-                                Navigator.of(context).popAndPushNamed('/login'),
-                            child: const Text(
-                              "OK",
-                              style: TextStyle(color: Colors.white),
-                            ),
+  void _showWelcomeDialog(String email) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Cheque seu email!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color(0xFF1C4036))),
+                    Text(
+                        '\nEstamos animados para acompanhar você nessa jornada culinária!!!\n\nEnviamos um email para $email com um link de confirmação!',
+                        style: const TextStyle(
+                            fontSize: 14, color: Color(0xFF1C4036))),
+                    Container(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF3FA63C)),
+                          onPressed: () => Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/home', (_) => false),
+                          child: const Text(
+                            "OK",
+                            style: TextStyle(color: Colors.white),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
-            );
-          });
-      _confirmEmail();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(errorAnswer!),
-        ),
-      );
-    }
+            ),
+          );
+        });
   }
 
-  void _confirmEmail() async {
+  Future<void> _register() async {
+    if (_loading) return;
+    if (!_agreeToTerms) {
+      showErrorSnackBar(context, 'Aceite os termos de uso para cadastrar-se.');
+      return;
+    }
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+
+    setState(() => _loading = true);
     try {
-      await auth.currentUser!.sendEmailVerification();
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Falha ao enviar a verificação de email'),
-          duration: Duration(seconds: 3),
-        ),
+      await context.read<AuthController>().register(
+            name: username.trim(),
+            email: email.trim(),
+            password: password,
+          );
+      if (!mounted) return;
+      _showWelcomeDialog(email.trim());
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      showErrorSnackBar(
+        context,
+        e.code == 'email_in_use'
+            ? 'O endereço de e-mail já está em uso.'
+            : e.userMessage,
       );
-    }
-  }
-
-  void _saveUserData() {
-    try {
-      auth.currentUser?.updateDisplayName(username);
-      auth.currentUser?.updatePhotoURL(
-          'https://firebasestorage.googleapis.com/v0/b/healthy-cook-79dd3.appspot.com/o/defaultImages%2Fuser.png?alt=media&token=622520e8-d262-4253-8682-565fb9b8228b');
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
-
-  _register(BuildContext context) async {
-    if (_agreeToTerms == true) {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        try {
-          await auth.createUserWithEmailAndPassword(
-              email: email, password: password);
-          showAlert(true, null);
-          _saveUserData();
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            showAlert(false, 'A senha é muito fraca.');
-          } else if (e.code == 'email-already-in-use') {
-            showAlert(false, 'O endereço de e-mail já está em uso.');
-          } else {
-            showAlert(false, 'Ocorreu um erro ao cadastrar o usuário');
-          }
-        } catch (e) {
-          showAlert(false, 'Ocorreu um erro desconhecido');
-          if (kDebugMode) {
-            print(e);
-          }
-        }
-      }
-    } else {
-      showAlertTerms('Aceite os termos de uso para cadastrar-se.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
     }
   }
 
@@ -282,7 +222,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
               onSaved: (value) => email = value!,
-              validator: _validateEmail,
+              validator: validateEmail,
             ),
           ),
           const SizedBox(height: 20),
@@ -314,7 +254,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
               onSaved: (value) => password = value!,
-              validator: _validatePassword,
+              validator: validateNewPassword,
               obscureText: !_showPassword,
             ),
           ),
@@ -341,7 +281,7 @@ class _RegisterFormState extends State<RegisterForm> {
           SizedBox(
             width: 300,
             child: ElevatedButton(
-              onPressed: () => _register(context),
+              onPressed: _loading ? null : _register,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3FA63C),
                 shape: RoundedRectangleBorder(
@@ -349,11 +289,19 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
-              child: const Text(
-                "Cadastrar",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
+              child: _loading
+                  ? const SizedBox.square(
+                      dimension: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      "Cadastrar",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
             ),
           ),
           const SizedBox(height: 10),

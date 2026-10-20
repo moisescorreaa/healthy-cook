@@ -13,6 +13,7 @@ class AppServices {
     required this.jwt,
     required this.auth,
     required this.images,
+    required this.corsAllowedOrigins,
   });
 
   factory AppServices.fromEnv(Env env) {
@@ -38,10 +39,8 @@ class AppServices {
         publicBaseUrl: env.publicBaseUrl,
         refreshTokenTtl: env.refreshTokenTtl,
       ),
-      images: ImageStorage(
-        directory: env.uploadsDir,
-        publicBaseUrl: env.publicBaseUrl,
-      ),
+      images: ImageStorage(directory: env.uploadsDir),
+      corsAllowedOrigins: env.corsAllowedOrigins,
     );
   }
 
@@ -49,4 +48,5 @@ class AppServices {
   final JwtService jwt;
   final AuthService auth;
   final ImageStorage images;
+  final List<String> corsAllowedOrigins;
 }

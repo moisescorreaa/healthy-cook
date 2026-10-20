@@ -59,7 +59,10 @@ exigem autenticação.
 | PUT | `/recipes/:id/image` | multipart, campo `image` (apenas o autor) |
 | PUT / DELETE | `/recipes/:id/like` | → `{likesCount, likedByMe}` |
 
-As imagens enviadas são servidas em `/uploads/...`.
+As imagens enviadas são servidas em `/uploads/...`. A API devolve essas URLs **relativas**,
+e o app as completa com o endereço que estiver usando (emulador, aparelho ou produção).
+
+Para o app rodando no navegador, libere as origens em `CORS_ALLOWED_ORIGINS`.
 
 ### Formato de erro
 

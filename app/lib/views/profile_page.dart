@@ -1,10 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthy_cook/components/edit_profile_form.dart';
 import 'package:healthy_cook/components/recipe_list.dart';
+import 'package:healthy_cook/data/api_exception.dart';
+import 'package:healthy_cook/data/auth_controller.dart';
 import 'package:line_icons/line_icon.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,8 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   void logoutPopUp(BuildContext context) async {
     showDialog(
       context: context,
@@ -36,7 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           ElevatedButton(
-            onPressed: () => logout(context),
+            onPressed: () {
+              Navigator.of(context).pop();
+              logout();
+            },
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF18592F)),
             child: const Text(
@@ -49,18 +50,20 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void logout(BuildContext context) async {
+  /// O App volta para a tela inicial quando a sessão é encerrada.
+  Future<void> logout() async {
+    final messenger = ScaffoldMessenger.of(context);
+    await context.read<AuthController>().logout();
+    messenger.showSnackBar(
+      const SnackBar(content: Text('Logout realizado com sucesso')),
+    );
+  }
+
+  Future<void> _refresh() async {
     try {
-      await auth.signOut();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logout realizado com sucesso')),
-      );
-      Navigator.of(context).pushReplacementNamed('/');
-      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erro ao realizar logout')),
-      );
+      await context.read<AuthController>().refreshUser();
+    } on ApiException {
+      // Mantém os dados atuais; a lista de receitas mostra o erro.
     }
   }
 
@@ -82,32 +85,34 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: const LineIcon.alternateSignOut())
           ],
         ),
-        body: const SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              EditProfileForm(),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: RefreshIndicator(
+            onRefresh: _refresh,
+            child: const SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
                 children: [
-                  Icon(
-                    Icons.menu,
-                    color: Color(0xFF1C4036),
+                  SizedBox(
+                    height: 30,
                   ),
+                  EditProfileForm(),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.menu,
+                        color: Color(0xFF1C4036),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  RecipeList(),
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
-              RecipeList(),
-            ],
-          ),
-        ));
+            )));
   }
 }

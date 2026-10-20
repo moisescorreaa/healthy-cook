@@ -1,13 +1,14 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:healthy_cook/components/feedback.dart';
+import 'package:healthy_cook/components/image_picking.dart';
+import 'package:healthy_cook/components/validators.dart';
+import 'package:healthy_cook/data/api_client.dart';
+import 'package:healthy_cook/data/api_exception.dart';
+import 'package:healthy_cook/data/models/recipe.dart';
+import 'package:healthy_cook/data/recipe_repository.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class AddRecipeForm extends StatefulWidget {
   const AddRecipeForm({super.key});
@@ -17,18 +18,10 @@ class AddRecipeForm extends StatefulWidget {
 }
 
 class _AddRecipeFormState extends State<AddRecipeForm> {
-  FirebaseStorage storage = FirebaseStorage.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
   final _formKey = GlobalKey<FormState>();
 
-  XFile? image;
-  String? title;
-  String? description;
-  String? ingredients;
-  int? timeToPrepare;
-  String? howToPrepare;
+  ImageUpload? image;
+  bool _saving = false;
 
   TextEditingController ingredientsController = TextEditingController();
   TextEditingController titleController = TextEditingController();
@@ -36,104 +29,65 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   TextEditingController timeToPrepareController = TextEditingController();
   TextEditingController howToPrepareController = TextEditingController();
 
-  String? validateFields(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Campo obrigatório';
-    }
-    return null;
-  }
-
-  pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    try {
-      image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() => image);
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+  Future<void> pickImage() async {
+    final picked = await pickImageFromGallery();
+    if (picked != null) setState(() => image = picked);
   }
 
   Future<void> saveRecipe() async {
-    if (_formKey.currentState!.validate() && image != null) {
-      try {
-        String refImage =
-            'images/${auth.currentUser?.uid}/recipes/img-${DateTime.now().toString()}.jpg';
-        Reference storageRef = FirebaseStorage.instance.ref().child(refImage);
-        await storageRef.putFile(File(image!.path));
-
-        String urlImage = await storageRef.getDownloadURL();
-
-        CollectionReference refRecipes = db.collection('recipes');
-        await refRecipes.add({
-          'nameUser': auth.currentUser?.displayName,
-          'photoUser': auth.currentUser?.photoURL,
-          'uidUser': auth.currentUser?.uid,
-          'refImage': refImage,
-          'urlImage': urlImage,
-          'title': title,
-          'description': description,
-          'ingredients': ingredients,
-          'timeToPrepare': timeToPrepare,
-          'howToPrepare': howToPrepare,
-          'likes': [],
-          'dateTime': DateTime.now(),
-        });
-
-        setState(() {
-          image = null;
-          title = '';
-          description = '';
-          ingredients = '';
-          timeToPrepare = null;
-          howToPrepare = '';
-          titleController.clear();
-          descriptionController.clear();
-          timeToPrepareController.clear();
-          howToPrepareController.clear();
-          ingredientsController.clear();
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Color(0xFF3FA63C),
-            content: Text(
-              'Receita postada com sucesso!',
-              style: TextStyle(color: Color(0xFFF2F2F2)),
-            ),
-          ),
-        );
-      } catch (e) {
-        // Lida com erros, se houver
-        if (kDebugMode) {
-          print('Erro ao salvar a receita: $e');
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              'Ocorreu um erro ao postar a receita',
-              style: TextStyle(color: Color(0xFFF2F2F2)),
-            ),
-          ),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            'Preencha todos os campos obrigatórios',
-            style: TextStyle(
-              color: Color(0xFFF2F2F2),
-            ),
-          ),
-        ),
+    if (_saving) return;
+    final valid = _formKey.currentState!.validate();
+    if (!valid || image == null) {
+      showErrorSnackBar(
+        context,
+        image == null && valid
+            ? 'Escolha uma imagem para a receita'
+            : 'Preencha todos os campos obrigatórios',
       );
+      return;
     }
+
+    setState(() => _saving = true);
+    try {
+      await context.read<RecipeRepository>().create(
+            RecipeDraft(
+              title: titleController.text.trim(),
+              description: descriptionController.text.trim(),
+              ingredients: ingredientsController.text.trim(),
+              howToPrepare: howToPrepareController.text.trim(),
+              timeToPrepareMin: int.parse(timeToPrepareController.text.trim()),
+            ),
+            image!,
+          );
+      if (!mounted) return;
+      setState(() {
+        image = null;
+        titleController.clear();
+        descriptionController.clear();
+        timeToPrepareController.clear();
+        howToPrepareController.clear();
+        ingredientsController.clear();
+      });
+      showSuccessSnackBar(context, 'Receita postada com sucesso!');
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      showErrorSnackBar(
+        context,
+        'Ocorreu um erro ao postar a receita. ${e.userMessage}',
+      );
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    ingredientsController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    timeToPrepareController.dispose();
+    howToPrepareController.dispose();
+    super.dispose();
   }
 
   @override
@@ -149,7 +103,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
               GestureDetector(
                 onTap: () => pickImage(),
                 child: image != null
-                    ? Image.file(File(image!.path))
+                    ? Image.memory(image!.bytes)
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -173,8 +127,8 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: validateFields,
-                onChanged: (value) => title = value,
+                maxLength: 150,
+                validator: validateRequired,
                 controller: titleController,
               ),
               const SizedBox(height: 10),
@@ -187,8 +141,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: validateFields,
-                  onChanged: (value) => description = value,
+                  validator: validateRequired,
                   controller: descriptionController),
               const SizedBox(height: 10),
               TextFormField(
@@ -200,8 +153,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: validateFields,
-                onChanged: (value) => ingredients = value,
+                validator: validateRequired,
                 controller: ingredientsController,
               ),
               const SizedBox(height: 10),
@@ -213,8 +165,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: validateFields,
-                onChanged: (value) => timeToPrepare = int.tryParse(value),
+                validator: validateMinutes,
                 controller: timeToPrepareController,
               ),
               const SizedBox(height: 10),
@@ -227,15 +178,14 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: validateFields,
-                onChanged: (value) => howToPrepare = value,
+                validator: validateRequired,
                 controller: howToPrepareController,
               ),
               const SizedBox(height: 20),
               SizedBox(
                 width: 300,
                 child: ElevatedButton(
-                  onPressed: () => saveRecipe(),
+                  onPressed: _saving ? null : saveRecipe,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C4036),
                     shape: RoundedRectangleBorder(
@@ -243,11 +193,20 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Color(0xFFF2F2F2)),
-                  ),
+                  child: _saving
+                      ? const SizedBox.square(
+                          dimension: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFFF2F2F2),
+                          ),
+                        )
+                      : const Text(
+                          "Salvar",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF2F2F2)),
+                        ),
                 ),
               ),
             ],

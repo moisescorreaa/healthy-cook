@@ -1,12 +1,35 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:healthy_cook/config/firebase_api.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:healthy_cook/config/api_config.dart';
+import 'package:healthy_cook/data/api_client.dart';
+import 'package:healthy_cook/data/auth_controller.dart';
+import 'package:healthy_cook/data/recipe_repository.dart';
+import 'package:healthy_cook/data/token_storage.dart';
 import 'package:healthy_cook/views/app.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  // Mantém o splash enquanto a sessão salva é restaurada.
+  FlutterNativeSplash.preserve(
+    widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
-  runApp(App());
+
+  final api = ApiClient(
+    baseUrl: apiBaseUrl(),
+    tokenStorage: SecureTokenStorage(),
+  );
+  final auth = AuthController(api);
+  await auth.restoreSession();
+  FlutterNativeSplash.remove();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider.value(value: api),
+        ChangeNotifierProvider.value(value: auth),
+        ChangeNotifierProvider(create: (_) => RecipeRepository(api)),
+      ],
+      child: const App(),
+    ),
+  );
 }

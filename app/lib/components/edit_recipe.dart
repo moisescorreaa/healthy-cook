@@ -1,26 +1,27 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:healthy_cook/components/feedback.dart';
+import 'package:healthy_cook/components/image_picking.dart';
+import 'package:healthy_cook/components/recipe_image.dart';
+import 'package:healthy_cook/components/validators.dart';
+import 'package:healthy_cook/data/api_client.dart';
+import 'package:healthy_cook/data/api_exception.dart';
+import 'package:healthy_cook/data/models/recipe.dart';
+import 'package:healthy_cook/data/recipe_repository.dart';
+import 'package:provider/provider.dart';
 
+/// Edição de uma receita. Ao salvar, devolve a receita atualizada.
 class EditRecipe extends StatefulWidget {
-  final DocumentSnapshot recipeDocument;
+  final Recipe recipe;
 
-  const EditRecipe({Key? key, required this.recipeDocument}) : super(key: key);
+  const EditRecipe({super.key, required this.recipe});
 
   @override
-  _EditRecipeState createState() => _EditRecipeState();
+  State<EditRecipe> createState() => _EditRecipeState();
 }
 
 class _EditRecipeState extends State<EditRecipe> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
-  XFile? image;
-  String? _currentImage;
+  ImageUpload? image;
+  bool _saving = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
@@ -30,81 +31,57 @@ class _EditRecipeState extends State<EditRecipe> {
   final TextEditingController _timeToPrepareController =
       TextEditingController();
 
-  String? validateFields(String? value, String fieldName) {
-    if (value == null || value.isEmpty) {
-      return 'Campo obrigatório';
-    }
-    return null;
+  Future<void> pickImage() async {
+    final picked = await pickImageFromGallery();
+    if (picked != null) setState(() => image = picked);
   }
 
-  pickImage() async {
-    final ImagePicker picker = ImagePicker();
+  Future<void> _updateRecipe() async {
+    if (_saving || !_formKey.currentState!.validate()) return;
+    setState(() => _saving = true);
     try {
-      image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() => image);
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
-
-  void _updateRecipe() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        String urlImage = _currentImage ?? widget.recipeDocument['urlImage'];
-
-        if (image != null) {
-          Reference storageRef = FirebaseStorage.instance.ref().child(
-              'images/${auth.currentUser?.uid}/recipes/img-${DateTime.now().toString()}.jpg');
-          await storageRef.putFile(File(image!.path));
-          urlImage = await storageRef.getDownloadURL();
-        }
-
-        await widget.recipeDocument.reference.update({
-          'title': _titleController.text,
-          'description': _descriptionController.text,
-          'ingredients': _ingredientsController.text,
-          'howToPrepare': _howToPrepareController.text,
-          'timeToPrepare': int.parse(_timeToPrepareController.text),
-          'urlImage': urlImage,
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Color(0xFF3FA63C),
-            content: Text('Receita atualizada com sucesso!'),
-          ),
-        );
-
-        Navigator.pop(context);
-      } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Erro ao atualizar a receita.'),
-          ),
-        );
-      }
+      final updated = await context.read<RecipeRepository>().update(
+            widget.recipe.id,
+            RecipeDraft(
+              title: _titleController.text.trim(),
+              description: _descriptionController.text.trim(),
+              ingredients: _ingredientsController.text.trim(),
+              howToPrepare: _howToPrepareController.text.trim(),
+              timeToPrepareMin: int.parse(_timeToPrepareController.text.trim()),
+            ),
+            image: image,
+          );
+      if (!mounted) return;
+      showSuccessSnackBar(context, 'Receita atualizada com sucesso!');
+      Navigator.pop(context, updated);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      showErrorSnackBar(
+          context, 'Erro ao atualizar a receita. ${e.userMessage}');
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 
   @override
   void initState() {
     super.initState();
+    final recipe = widget.recipe;
+    _titleController.text = recipe.title;
+    _descriptionController.text = recipe.description;
+    _ingredientsController.text = recipe.ingredients;
+    _howToPrepareController.text = recipe.howToPrepare;
+    _timeToPrepareController.text = recipe.timeToPrepareMin.toString();
+  }
 
-    _currentImage = widget.recipeDocument['urlImage'];
-    _titleController.text = widget.recipeDocument['title'];
-    _descriptionController.text = widget.recipeDocument['description'];
-    _ingredientsController.text = widget.recipeDocument['ingredients'];
-    _howToPrepareController.text = widget.recipeDocument['howToPrepare'];
-    _timeToPrepareController.text =
-        widget.recipeDocument['timeToPrepare'].toString();
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _ingredientsController.dispose();
+    _howToPrepareController.dispose();
+    _timeToPrepareController.dispose();
+    super.dispose();
   }
 
   @override
@@ -129,10 +106,11 @@ class _EditRecipeState extends State<EditRecipe> {
                     child: Container(
                       padding: const EdgeInsets.all(12.0),
                       child: image != null
-                          ? Image.file(File(image!.path))
-                          : _currentImage != null
-                              ? Image.network(_currentImage!)
-                              : const Icon(Icons.image),
+                          ? Image.memory(image!.bytes)
+                          : RecipeImage(
+                              url: widget.recipe.imageUrl,
+                              fit: BoxFit.contain,
+                            ),
                     ),
                   ),
                 ),
@@ -145,7 +123,8 @@ class _EditRecipeState extends State<EditRecipe> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: (value) => validateFields(value, 'Título'),
+                  maxLength: 150,
+                  validator: validateRequired,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -158,7 +137,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: (value) => validateFields(value, 'Descrição'),
+                  validator: validateRequired,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -171,7 +150,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: (value) => validateFields(value, 'Ingredientes'),
+                  validator: validateRequired,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -183,8 +162,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: (value) =>
-                      validateFields(value, 'Tempo de Preparo'),
+                  validator: validateMinutes,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -197,14 +175,13 @@ class _EditRecipeState extends State<EditRecipe> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  validator: (value) =>
-                      validateFields(value, 'Modo de Preparo'),
+                  validator: validateRequired,
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _updateRecipe,
+                    onPressed: _saving ? null : _updateRecipe,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF18592F),
                       shape: RoundedRectangleBorder(

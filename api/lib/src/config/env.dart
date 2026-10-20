@@ -51,4 +51,12 @@ class Env {
       Duration(days: int.parse(_get('REFRESH_TOKEN_TTL_DAYS', '30')));
 
   String get uploadsDir => _get('UPLOADS_DIR', 'public/uploads');
+
+  /// Origens liberadas para CORS (separadas por vírgula), usadas pelo app
+  /// rodando no navegador. `*` libera qualquer origem; vazio desativa o CORS.
+  List<String> get corsAllowedOrigins => _get('CORS_ALLOWED_ORIGINS', '')
+      .split(',')
+      .map((origin) => origin.trim())
+      .where((origin) => origin.isNotEmpty)
+      .toList();
 }

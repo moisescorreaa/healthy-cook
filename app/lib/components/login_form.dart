@@ -1,7 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthy_cook/components/feedback.dart';
+import 'package:healthy_cook/components/validators.dart';
+import 'package:healthy_cook/data/api_exception.dart';
+import 'package:healthy_cook/data/auth_controller.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -11,9 +13,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   bool _showPassword = false;
+  bool _loading = false;
 
   final _formKey = GlobalKey<FormState>();
   final formKeyDialog = GlobalKey<FormState>();
@@ -22,17 +23,6 @@ class _LoginFormState extends State<LoginForm> {
   late String password;
   final lostEmail = TextEditingController();
 
-  void showAlert(String? errorAnswer) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(
-          errorAnswer!,
-        ),
-      ),
-    );
-  }
-
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Por favor, insira a senha';
@@ -40,64 +30,44 @@ class _LoginFormState extends State<LoginForm> {
     return null;
   }
 
-  String? _validateEmail(String? value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = RegExp(pattern);
-    if (value!.isEmpty) {
-      return 'Por favor, insira um email';
-    } else if (!regExp.hasMatch(value)) {
-      return 'Por favor, insira um email válido.';
-    } else {
-      return null;
+  Future<void> login() async {
+    if (_loading || !_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+    setState(() => _loading = true);
+    try {
+      await context
+          .read<AuthController>()
+          .login(email: email.trim(), password: password);
+      if (!mounted) return;
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      showErrorSnackBar(
+        context,
+        e.code == 'invalid_credentials'
+            ? 'Email ou senha inválidos.'
+            : e.userMessage,
+      );
+    } finally {
+      if (mounted) setState(() => _loading = false);
     }
   }
 
-  login(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      try {
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-
-        Navigator.of(context).pushReplacementNamed('/home');
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'wrong-password' || e.code == 'invalid-email') {
-          showAlert('Email ou senha inválidos.');
-        } else if (e.code == 'user-disabled') {
-          showAlert('Esse usuário corresponde a um email desativado.');
-        } else if (e.code == 'user-not-found') {
-          showAlert('Usuário não foi encontrado');
-        }
-      } catch (e) {
-        showAlert('Ocorreu um erro desconhecido');
-      }
-    }
-  }
-
-  void sendEmailResetPassword(BuildContext context, String email) async {
-    if (formKeyDialog.currentState!.validate()) {
-      try {
-        await auth.sendPasswordResetEmail(email: email);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Color(0xFF3FA63C),
-            content: Text(
-              'E-mail de redefinição enviado com sucesso',
-            ),
-          ),
-        );
-        Navigator.of(context).pushReplacementNamed('/login');
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              'Ocorreu um erro ao enviar o e-mail de redefinição',
-            ),
-          ),
-        );
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
+  Future<void> sendEmailResetPassword(BuildContext dialogContext) async {
+    if (!formKeyDialog.currentState!.validate()) return;
+    final email = lostEmail.text.trim();
+    try {
+      await context.read<AuthController>().requestPasswordReset(email);
+      if (!mounted) return;
+      if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+      showSuccessSnackBar(
+        context,
+        'Se o e-mail estiver cadastrado, enviamos um código de redefinição',
+      );
+      Navigator.of(context).pushNamed('/reset-password', arguments: email);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      showErrorSnackBar(context, e.userMessage);
     }
   }
 
@@ -126,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: lostEmail,
-                    validator: _validateEmail,
+                    validator: validateEmail,
                     decoration: InputDecoration(
                       labelText: "Email",
                       labelStyle: const TextStyle(
@@ -150,8 +120,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () =>
-                      sendEmailResetPassword(context, lostEmail.text),
+                  onPressed: () => sendEmailResetPassword(context),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1C4036)),
                   child: const Text(
@@ -207,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              validator: _validateEmail,
+              validator: validateEmail,
               onSaved: (value) => email = value!,
             ),
           ),
@@ -267,7 +236,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: 300,
             child: ElevatedButton(
-              onPressed: () => login(context),
+              onPressed: _loading ? null : login,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3FA63C),
                 shape: RoundedRectangleBorder(
@@ -275,11 +244,19 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
-              child: const Text(
-                "Login",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
+              child: _loading
+                  ? const SizedBox.square(
+                      dimension: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      "Login",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
             ),
           ),
           const SizedBox(height: 10),

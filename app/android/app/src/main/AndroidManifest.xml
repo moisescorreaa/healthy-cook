@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Acesso à API do Healthy Cook (antes declarado pelo plugin do Firebase). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="HealthyCook"
         android:name="${applicationName}"

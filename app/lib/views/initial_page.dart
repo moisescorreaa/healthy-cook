@@ -4,7 +4,7 @@ class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
 
   @override
-  _InitialPageState createState() => _InitialPageState();
+  State<InitialPage> createState() => _InitialPageState();
 }
 
 class _InitialPageState extends State<InitialPage> {
@@ -17,12 +17,10 @@ class _InitialPageState extends State<InitialPage> {
           children: [
             SizedBox(
               height: 200,
-              child: Expanded(
-                child: Image.asset(
-                  'assets/images/logotipo.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                ),
+              child: Image.asset(
+                'assets/images/logotipo.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
               ),
             ),
             const Flexible(

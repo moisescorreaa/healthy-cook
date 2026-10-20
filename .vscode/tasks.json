@@ -22,8 +22,10 @@
     {
       "label": "api: dev (hot reload)",
       "type": "shell",
-      "command": "dart_frog dev --port 8080",
-      "options": { "cwd": "${workspaceFolder}/api" },
+      "command": "dart pub global run dart_frog_cli:dart_frog dev --port 8080",
+      "options": {
+        "cwd": "${workspaceFolder}/api"
+      },
       "dependsOn": "db: subir MySQL",
       "isBackground": true,
       "problemMatcher": []
@@ -32,29 +34,40 @@
       "label": "api: analyze",
       "type": "shell",
       "command": "dart analyze",
-      "options": { "cwd": "${workspaceFolder}/api" },
+      "options": {
+        "cwd": "${workspaceFolder}/api"
+      },
       "problemMatcher": "$dart-flutter-analyze"
     },
     {
       "label": "app: pub get",
       "type": "shell",
       "command": "flutter pub get",
-      "options": { "cwd": "${workspaceFolder}/app" },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "problemMatcher": []
     },
     {
       "label": "app: analyze",
       "type": "shell",
       "command": "flutter analyze",
-      "options": { "cwd": "${workspaceFolder}/app" },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "problemMatcher": "$dart-flutter-analyze"
     },
     {
       "label": "app: test",
       "type": "shell",
       "command": "flutter test",
-      "options": { "cwd": "${workspaceFolder}/app" },
-      "group": { "kind": "test", "isDefault": true },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
       "problemMatcher": []
     },
     {

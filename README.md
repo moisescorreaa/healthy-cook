@@ -26,7 +26,7 @@ App Flutter ──HTTP/JSON──▶ API Dart Frog ──▶ MySQL
 docker compose up -d
 
 # 2. API (veja api/README.md para a configuração do .env)
-cd api && cp .env.example .env && dart pub get && dart_frog dev
+cd api && cp -n .env.example .env && dart pub get && dart_frog dev
 
 # 3. App
 cd app && flutter pub get && flutter run

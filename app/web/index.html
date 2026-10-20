@@ -27,15 +27,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>healthy_cook</title>
+  <title>HealthyCook</title>
   <link rel="manifest" href="manifest.json">
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer=""></script>
   <style id="splash-screen-style">
     .flutter-loader {
       z-index: 999999;
@@ -129,21 +123,8 @@
         <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
     </picture>
   </div>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
+  <!-- Carrega o app (gerado pelo `flutter build web`). -->
+  <script src="flutter_bootstrap.js" async></script>
 
 
 </body></html>

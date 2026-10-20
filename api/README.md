@@ -10,7 +10,7 @@ Substitui o Firebase Auth, o Firestore, o Firebase Storage e o Algolia.
 docker compose up -d
 
 cd api
-cp .env.example .env          # ajuste o JWT_SECRET (openssl rand -base64 48)
+cp -n .env.example .env       # só cria se não existir; troque o JWT_SECRET
 dart pub get
 dart pub global activate dart_frog_cli
 dart_frog dev                 # http://localhost:8080

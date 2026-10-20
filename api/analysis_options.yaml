@@ -1,0 +1,9 @@
+include: package:dart_frog_lint/recommended.yaml
+
+linter:
+  rules:
+    # Regras pensadas para pacotes publicados; não se aplicam a esta API.
+    public_member_api_docs: false
+    one_member_abstracts: false
+    # O `default` dos switches trata métodos HTTP não suportados (405).
+    no_default_cases: false

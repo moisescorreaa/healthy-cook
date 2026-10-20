@@ -1,0 +1,34 @@
+{
+  "dart.lineLength": 80,
+  "dart.previewFlutterUiGuides": true,
+  "dart.closingLabels": true,
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.selectionHighlight": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/build": true,
+    "android/.gradle": true
+  },
+  "search.exclude": {
+    "**/.dart_tool": true,
+    "**/build": true,
+    "pubspec.lock": true
+  }
+}

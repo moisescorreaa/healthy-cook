@@ -1,0 +1,67 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "db: subir MySQL",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "db: parar MySQL",
+      "type": "shell",
+      "command": "docker compose stop",
+      "problemMatcher": []
+    },
+    {
+      "label": "db: recriar do zero (apaga os dados)",
+      "type": "shell",
+      "command": "docker compose down -v && docker compose up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: dev (hot reload)",
+      "type": "shell",
+      "command": "dart_frog dev --port 8080",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "dependsOn": "db: subir MySQL",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "api: analyze",
+      "type": "shell",
+      "command": "dart analyze",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "problemMatcher": "$dart-flutter-analyze"
+    },
+    {
+      "label": "app: pub get",
+      "type": "shell",
+      "command": "flutter pub get",
+      "options": { "cwd": "${workspaceFolder}/app" },
+      "problemMatcher": []
+    },
+    {
+      "label": "app: analyze",
+      "type": "shell",
+      "command": "flutter analyze",
+      "options": { "cwd": "${workspaceFolder}/app" },
+      "problemMatcher": "$dart-flutter-analyze"
+    },
+    {
+      "label": "app: test",
+      "type": "shell",
+      "command": "flutter test",
+      "options": { "cwd": "${workspaceFolder}/app" },
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "dart: format (app + api)",
+      "type": "shell",
+      "command": "dart format app/lib app/test api/lib api/routes api/main.dart",
+      "problemMatcher": []
+    }
+  ]
+}
